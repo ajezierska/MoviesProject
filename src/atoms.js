@@ -19,3 +19,13 @@ export const filterGenreState = atom({
   default: "all",
   key: "filterGenreState",
 });
+
+export const sortValueState = atom({
+  default: "",
+  key: "sortValueState",
+});
+
+export const dataSortState = atom({
+  default: "",
+  key: "dataSortState",
+});
