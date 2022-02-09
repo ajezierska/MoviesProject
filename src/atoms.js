@@ -9,3 +9,13 @@ export const moviesState = atom({
   default: [],
   key: "moviesState",
 });
+
+export const filterDateState = atom({
+  default: "all",
+  key: "filterDateState",
+});
+
+export const filterGenreState = atom({
+  default: "all",
+  key: "filterGenreState",
+});
