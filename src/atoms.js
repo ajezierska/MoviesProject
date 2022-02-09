@@ -29,3 +29,13 @@ export const dataSortState = atom({
   default: "",
   key: "dataSortState",
 });
+
+export const moviesToWatchState = atom({
+  default: [],
+  key: "moviesToWatchState",
+});
+
+export const favouriteMoviesState = atom({
+  default: [],
+  key: "favouriteMoviesState",
+});

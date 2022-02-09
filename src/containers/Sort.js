@@ -1,11 +1,12 @@
 import React, { useRef } from 'react'
-import { useRecoilState } from 'recoil'
-import { sortValueState, dataSortState } from "../atoms";
+import { useRecoilState, useResetRecoilState } from 'recoil'
+import { sortValueState, dataSortState, searchState } from "../atoms";
 
 export const Sort = () => {
     const [sortValue, setSortValue] = useRecoilState(sortValueState)
     const [, setDataSort] = useRecoilState(dataSortState)
     const sortEl = useRef('')
+    const resetSearchValue = useResetRecoilState(searchState);
     const sortOptions = [
         {name: 'release_date.asc', value: 'Release date - ascending' }, 
         {name: 'release_date.desc', value: 'Release date - descending' }, 
@@ -19,6 +20,7 @@ export const Sort = () => {
         setSortValue(sortEl.current.value)
         const sortData = sortOptions.find((el) => el.value === sortEl.current.value).name
         setDataSort(sortData);
+        resetSearchValue()
     }
 
     return (

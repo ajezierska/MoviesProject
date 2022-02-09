@@ -12,6 +12,7 @@ import { MoviesListing } from "./MoviesListing";
 import { Search } from "./Search";
 import { Filter } from "./Filter";
 import { Sort } from "./Sort";
+import { Header } from "./Header";
 
 export const Dashboard = () => {
   const [, setMovies] = useRecoilState(moviesState);
@@ -57,6 +58,7 @@ export const Dashboard = () => {
 
   return (
     <div>
+      <Header/>
       <Search />
       <Filter />
       <Sort />
