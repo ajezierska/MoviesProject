@@ -1,14 +1,11 @@
-import { selector } from "recoil";
+import { atom } from "recoil";
 
-export const moviesListSelector = selector({
-  key: "moviesListSelector",
-  get: async () => {
-    const response = await fetch(
-      "https://api.themoviedb.org/3/movie/now_playing?api_key=07110192b3fd8b432cc796b4c48dd507"
-    );
-    const data = await response.json();
-    console.log("🚀 ~ file: atoms.js ~ line 8 ~ get: ~ data", data);
+export const searchState = atom({
+  default: "",
+  key: "searchState",
+});
 
-    return data.results;
-  },
+export const moviesState = atom({
+  default: [],
+  key: "moviesState",
 });

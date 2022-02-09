@@ -1,13 +1,11 @@
 import "./App.css";
 import React from "react";
-import { MoviesListing } from "./containers/MoviesListing";
+import { Dashboard } from "./containers/Dashboard";
 
 function App() {
   return (
     <div className="App">
-      <React.Suspense fallback={<div>loading data...</div>}>
-        <MoviesListing />
-      </React.Suspense>
+      <Dashboard />
     </div>
   );
 }

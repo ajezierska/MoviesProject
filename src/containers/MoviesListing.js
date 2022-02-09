@@ -1,14 +1,13 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { moviesListSelector } from "../atoms";
+import { useRecoilState } from "recoil";
+import { moviesState } from "../atoms";
 
 export const MoviesListing = () => {
-  const moviesData = useRecoilValue(moviesListSelector);
+  const moviesData = useRecoilState(moviesState);
   return (
     <div>
-      {moviesData.map((movie) => (
-        <li key={movie.id}>{movie.title}</li>
-      ))}
+      {moviesData &&
+        moviesData[0].map((movie) => <li key={movie.id}>{movie.title}</li>)}
     </div>
   );
 };
