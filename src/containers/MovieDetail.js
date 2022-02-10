@@ -1,12 +1,22 @@
+import {
+  Box,
+  Image,
+  Text,
+  Flex,
+  Container,
+  Button,
+  Heading,
+  Paragraph,
+} from "@theme-ui/components";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
-import { MovieComponent } from "./MovieComponent";
+import { HomepageButton } from "./HomepageButton";
+import { MovieButtons } from "./MovieButtons";
 
 export const MovieDetail = () => {
   const { movieId } = useParams();
   const [movieDetail, setMovieDetail] = useState("");
-  const imageUrl = "https://image.tmdb.org/t/p/w500";
+  const imageUrl = "https://image.tmdb.org/t/p/original";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,29 +26,70 @@ export const MovieDetail = () => {
       setMovieDetail(data);
     };
     fetchData();
-  }, []);
+  }, [movieId]);
+
   return (
-    <div>
-      <MovieComponent movie={movieDetail} />
-      <img src={`${imageUrl}${movieDetail.backdrop_path}`} />
-      <h2>{movieDetail.title}</h2>
-      <a href={movieDetail.homepage} target="_blank">
-        Homepage
-      </a>
-      <p>{movieDetail.overview}</p>
-      <p>Release Date: {movieDetail.release_date}</p>
-      <p>Runtime: {movieDetail.runtime} min</p>
-      <p>vote average: {movieDetail.vote_average}</p>
-      <p>
-        Production campanies:{" "}
-        {movieDetail &&
-          movieDetail.production_companies.map((company) => company.name)}
-      </p>
-      <p>
-        Genres:{" "}
-        {movieDetail && movieDetail.genres.map((genre) => `${genre.name}, `)}
-      </p>
-      <Link to="/">back</Link>
-    </div>
+    <Container sx={{ maxWidth: "50rem" }}>
+      {movieDetail.backdrop_path ? (
+        <Image src={`${imageUrl}${movieDetail.backdrop_path}`} />
+      ) : (
+        <Flex
+          bg="lightGray"
+          variant="styles.flexCenter"
+          sx={{ height: "13rem" }}
+        >
+          <Text color="textWhite">No image</Text>
+        </Flex>
+      )}
+      <Container p={2}>
+        <Heading>{movieDetail.title}</Heading>
+        <Container variant="flexContainer">
+          {movieDetail.homepage && (
+            <Button variant="moviePage" mr={2}>
+              <a href={movieDetail.homepage} target="_blank" rel="noopener noreferrer">
+                page of movie
+              </a>
+            </Button>
+          )}
+          <MovieButtons movie={movieDetail} />
+        </Container>
+        <Paragraph variant="description" mt={2}>
+          <Text color="rate">Description: </Text>
+          {movieDetail.overview}
+        </Paragraph>
+
+        <Text color="rate">Release Date: </Text>
+        <Text variant="description">
+          {movieDetail.release_date ? movieDetail.release_date : "-"}
+        </Text>
+        <Box>
+          <Text color="rate">Runtime: </Text>
+          <Text variant="description">
+            {movieDetail.runtime ? `${movieDetail.runtime} min` : "-"}
+          </Text>
+        </Box>
+        <Text color="rate">vote average: </Text>
+        <Text variant="description">
+          {movieDetail.vote_average ? movieDetail.vote_average : "no votes"}
+        </Text>
+        <Box>
+          <Text color="rate">Production campanies: </Text>
+          <Text variant="description">
+            {movieDetail && movieDetail.production_companies.lenght === 0
+              ? movieDetail.production_companies.map((company) => company.name)
+              : " -"}
+          </Text>
+        </Box>
+        <Box mb={2}>
+          <Text color="rate">Genres: </Text>
+          <Text variant="description">
+            {movieDetail && movieDetail.genres.length === 0
+              ? movieDetail.genres.map((genre) => `${genre.name}, `)
+              : " -"}
+          </Text>
+        </Box>
+        <HomepageButton />
+      </Container>
+    </Container>
   );
 };

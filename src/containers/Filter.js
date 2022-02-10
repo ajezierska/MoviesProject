@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import { Select, Text, Container } from "@theme-ui/components";
+import React, { useState, useEffect } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { searchState, filterDateState, filterGenreState } from "../atoms";
+import {createArr} from "../utils/utils"
 
 export const Filter = () => {
   const [genres, setGenres] = useState([]);
   const [filterGenre, setFilterGenre] = useRecoilState(filterGenreState);
   const [filterDate, setFilterDate] = useRecoilState(filterDateState);
   const resetSearchValue = useResetRecoilState(searchState);
+  const arrOfDate = createArr();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,33 +32,29 @@ export const Filter = () => {
     resetSearchValue();
   };
 
-  const createArr = () => {
-    const today = new Date().getFullYear();
-    let arrOfDate = [];
-    for (let i = 1874; i <= today; i++) {
-      arrOfDate.push(i);
-    }
-    return arrOfDate;
-  };
-  const arrOfDate = createArr();
   return (
     <>
-      <select value={filterDate} onChange={(e) => handleFilterDate(e)}>
-        <option value="all">all</option>
+    <Container variant="filterContainer">
+    <Text>
+      Filters:
+    </Text>
+      <Select variant='filter' value={filterDate} onChange={(e) => handleFilterDate(e)}>
+        <option value="Release Date">Release date</option>
         {arrOfDate.map((date) => (
           <option value={date} key={date}>
             {date}
           </option>
         ))}
-      </select>
-      <select value={filterGenre} onChange={(e) => handleFilterGenre(e)}>
-        <option value="all">all</option>
+      </Select>
+      <Select sx={{marginLeft: 0, '@media (min-width: 768px)': { marginLeft: 2 }}} variant='filter' value={filterGenre} onChange={(e) => handleFilterGenre(e)}>
+        <option value="Genre">Genre</option>
         {genres.map((genre) => (
           <option key={genre.id} value={genre.id}>
             {genre.name}
           </option>
         ))}
-      </select>
+      </Select>
+    </Container>
     </>
   );
 };

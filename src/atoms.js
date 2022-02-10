@@ -11,12 +11,12 @@ export const moviesState = atom({
 });
 
 export const filterDateState = atom({
-  default: "all",
+  default: "Release Date",
   key: "filterDateState",
 });
 
 export const filterGenreState = atom({
-  default: "all",
+  default: "Genre",
   key: "filterGenreState",
 });
 

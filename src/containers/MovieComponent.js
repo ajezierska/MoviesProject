@@ -1,66 +1,36 @@
-import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { favouriteMoviesState, moviesToWatchState } from "../atoms";
+import React from "react";
+import { Container, Flex, Image, Text } from "@theme-ui/components";
+import { Link } from "react-router-dom";
 
 export const MovieComponent = ({ movie }) => {
-  const [moviesToWatch, setMoviesToWatch] = useRecoilState(moviesToWatchState);
-  const [favouriteMovies, setFavouriteMovies] =
-    useRecoilState(favouriteMoviesState);
-
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("movies_to_watch"));
-    if (data) setMoviesToWatch(data);
-  }, []);
-
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("favourite_movies"));
-    if (data) setFavouriteMovies(data);
-  }, []);
-
-  useEffect(() => {
-    if (moviesToWatch.length === 0) return;
-    localStorage.setItem("movies_to_watch", JSON.stringify(moviesToWatch));
-  }, [moviesToWatch]);
-
-  useEffect(() => {
-    if (favouriteMovies.length === 0) return;
-    localStorage.setItem("favourite_movies", JSON.stringify(favouriteMovies));
-  }, [favouriteMovies]);
-
-  const handleAddToWatch = (movie) => {
-    if (moviesToWatch.find((el) => el.id === movie.id)) {
-      const newArr = moviesToWatch.filter((el) => {
-        return el.id !== movie.id;
-      });
-      setMoviesToWatch(newArr);
-    } else {
-      setMoviesToWatch([...moviesToWatch, movie]);
-    }
-  };
-
-  const handleFavouriteMovies = (movie) => {
-    if (favouriteMovies.find((el) => el.id === movie.id)) {
-      const newArr = favouriteMovies.filter((el) => {
-        return el.id !== movie.id;
-      });
-      setFavouriteMovies(newArr);
-    } else {
-      setFavouriteMovies([...favouriteMovies, movie]);
-    }
-  };
+  const imageUrl = "https://image.tmdb.org/t/p/w500";
 
   return (
     <>
-      <button onClick={() => handleAddToWatch(movie)}>
-        {moviesToWatch.find((el) => el.id === movie.id)
-          ? "remove from add to watch"
-          : "Add to watch"}
-      </button>
-      <button onClick={() => handleFavouriteMovies(movie)}>
-        {favouriteMovies.find((el) => el.id === movie.id)
-          ? "remove from favourite"
-          : "Add to favourtite"}
-      </button>
+      <Link to={`/movie/${movie.id}`} style={{ height: "100%" }}>
+        <Container variant="movieImageContainer">
+          <Flex p={2} variant="styles.spaceBetween">
+            <Text variant="links">{movie.title}</Text>
+            <Text variant="rate" color="rate" fontSize="3">
+              {movie.vote_count ? movie.vote_average : "no votes"}
+            </Text>
+          </Flex>
+          {movie.backdrop_path ? (
+            <Image
+              variant="fullWidth"
+              src={`${imageUrl}${movie.backdrop_path}`}
+            />
+          ) : (
+            <Flex
+              bg="lightGray"
+              variant="styles.flexCenter"
+              sx={{ height: "100%" }}
+            >
+              <Text color="secondaryText">No image</Text>
+            </Flex>
+          )}
+        </Container>
+      </Link>
     </>
   );
 };

@@ -5,7 +5,7 @@ import {
   searchState,
   filterDateState,
   filterGenreState,
-  dataSortState
+  dataSortState,
 } from "../atoms";
 
 import { MoviesListing } from "./MoviesListing";
@@ -13,13 +13,14 @@ import { Search } from "./Search";
 import { Filter } from "./Filter";
 import { Sort } from "./Sort";
 import { Header } from "./Header";
+import { Container } from "theme-ui";
 
 export const Dashboard = () => {
   const [, setMovies] = useRecoilState(moviesState);
   const searchTerm = useRecoilValue(searchState);
   const filterGenre = useRecoilValue(filterGenreState);
   const filterDate = useRecoilValue(filterDateState);
-  const sortData = useRecoilValue(dataSortState)
+  const sortData = useRecoilValue(dataSortState);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,33 +37,34 @@ export const Dashboard = () => {
     fetchData();
   }, [searchTerm, setMovies]);
 
-  useEffect(
-    () => {
-      const fetchData = async () => {
-        const genre = filterGenre;
-        const date = filterDate;
-        const sort = sortData;
-        const releaseDateparams =
-          date === "all" ? "" : `&primary_release_year=${date}`;
-        const genreParams = genre === "all" ? "" : `&with_genres=${genre}`;
-        const sortParams = sort === ""  ?  "" : `&sort_by=${sort}`;
-        const url = `https://api.themoviedb.org/3/discover/movie?api_key=07110192b3fd8b432cc796b4c48dd507${releaseDateparams}${genreParams}${sortParams}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        setMovies(data.results);
-      };
-      fetchData();
-    },
-    [filterGenre, filterDate, searchTerm, sortData]
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      const genre = filterGenre;
+      const date = filterDate;
+      const sort = sortData;
+      const releaseDateparams =
+        date === "Release Date" ? "" : `&primary_release_year=${date}`;
+      const genreParams = genre === "Genre" ? "" : `&with_genres=${genre}`;
+      const sortParams = sort === "" ? "" : `&sort_by=${sort}`;
+      const url = `https://api.themoviedb.org/3/discover/movie?api_key=07110192b3fd8b432cc796b4c48dd507${releaseDateparams}${genreParams}${sortParams}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setMovies(data.results);
+    };
+    fetchData();
+  }, [filterGenre, filterDate, searchTerm, sortData, setMovies]);
 
   return (
-    <div>
-      <Header/>
-      <Search />
-      <Filter />
-      <Sort />
-      <MoviesListing />
-    </div>
+    <>
+      <Header />
+      <Container p={2} sx={{ maxWidth: "70rem" }}>
+        <Container variant="flexContainer">
+          <Search />
+          <Filter />
+          <Sort />
+        </Container>
+        <MoviesListing />
+      </Container>
+    </>
   );
 };
