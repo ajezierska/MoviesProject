@@ -169,11 +169,16 @@ export const theme = {
     },
   },
   styles: {
-    spinner: {
-      position: "fixed",
+    center: {
+      position: "absolute",
       transform: "translate(-50%, -50%)",
-      top: "50%",
+      top: "35vh",
       left: "50%",
+    },
+    spinnerContainer: {
+      position: "absolute",
+      width: "100%",
+      height: "100%",
     },
     spaceBetween: {
       justifyContent: "space-between",

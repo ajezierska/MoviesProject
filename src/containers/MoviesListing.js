@@ -1,16 +1,17 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { moviesState } from "../atoms";
+import { moviesState, showSpinnerState } from "../atoms";
 import { MovieButtons } from "./MovieButtons";
-import { Grid, Container, Spinner } from "@theme-ui/components";
+import { Grid, Container, Spinner, Text, Box } from "@theme-ui/components";
 import { MovieComponent } from "./MovieComponent";
 
 export const MoviesListing = () => {
   const moviesData = useRecoilValue(moviesState);
+  const showSpinner = useRecoilValue(showSpinnerState);
 
   return (
-    <Grid variant="mainGrid">
-      {moviesData.length !== 0 ? (
+    <Grid variant="mainGrid" sx={{ position: "relative" }}>
+      {moviesData && moviesData.length !== 0 ? (
         moviesData.map((movie) => (
           <Container
             variant="movieListContainer"
@@ -24,7 +25,14 @@ export const MoviesListing = () => {
           </Container>
         ))
       ) : (
-        <Spinner size={80} variant="styles.spinner" />
+        <Box variant="styles.center">
+          <Text>no movies</Text>
+        </Box>
+      )}
+      {showSpinner && (
+        <Box bg="background" variant="styles.spinnerContainer">
+          <Spinner bg="background" variant="styles.center" size={90} />
+        </Box>
       )}
     </Grid>
   );

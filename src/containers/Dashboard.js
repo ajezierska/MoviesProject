@@ -6,6 +6,7 @@ import {
   filterDateState,
   filterGenreState,
   dataSortState,
+  showSpinnerState,
 } from "../atoms";
 
 import { MoviesListing } from "./MoviesListing";
@@ -21,8 +22,10 @@ export const Dashboard = () => {
   const filterGenre = useRecoilValue(filterGenreState);
   const filterDate = useRecoilValue(filterDateState);
   const sortData = useRecoilValue(dataSortState);
+  const [, setShowSpinner] = useRecoilState(showSpinnerState);
 
   useEffect(() => {
+    setShowSpinner(true);
     const fetchData = async () => {
       const query = searchTerm;
       const urlAllMovies =
@@ -32,27 +35,38 @@ export const Dashboard = () => {
       url = searchTerm === "" ? urlAllMovies : urlSearch;
       const response = await fetch(url);
       const data = await response.json();
+      setShowSpinner(false);
       setMovies(data.results);
     };
     fetchData();
-  }, [searchTerm, setMovies]);
+  }, [searchTerm, setMovies, setShowSpinner]);
 
   useEffect(() => {
+    if (!filterGenre && !filterDate && !sortData) return;
+    setShowSpinner(true);
     const fetchData = async () => {
       const genre = filterGenre;
       const date = filterDate;
       const sort = sortData;
       const releaseDateparams =
-        date === "Release Date" ? "" : `&primary_release_year=${date}`;
-      const genreParams = genre === "Genre" ? "" : `&with_genres=${genre}`;
+        date === "" ? "" : `&primary_release_year=${date}`;
+      const genreParams = genre === "" ? "" : `&with_genres=${genre}`;
       const sortParams = sort === "" ? "" : `&sort_by=${sort}`;
       const url = `https://api.themoviedb.org/3/discover/movie?api_key=07110192b3fd8b432cc796b4c48dd507${releaseDateparams}${genreParams}${sortParams}`;
       const response = await fetch(url);
       const data = await response.json();
+      setShowSpinner(false);
       setMovies(data.results);
     };
     fetchData();
-  }, [filterGenre, filterDate, searchTerm, sortData, setMovies]);
+  }, [
+    filterGenre,
+    filterDate,
+    searchTerm,
+    sortData,
+    setMovies,
+    setShowSpinner,
+  ]);
 
   return (
     <>

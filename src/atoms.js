@@ -11,12 +11,12 @@ export const moviesState = atom({
 });
 
 export const filterDateState = atom({
-  default: "Release Date",
+  default: "",
   key: "filterDateState",
 });
 
 export const filterGenreState = atom({
-  default: "Genre",
+  default: "",
   key: "filterGenreState",
 });
 
@@ -38,4 +38,9 @@ export const moviesToWatchState = atom({
 export const favouriteMoviesState = atom({
   default: [],
   key: "favouriteMoviesState",
+});
+
+export const showSpinnerState = atom({
+  default: false,
+  key: "showSpinnerState",
 });
